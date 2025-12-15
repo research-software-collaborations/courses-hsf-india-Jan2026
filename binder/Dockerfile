@@ -5,11 +5,6 @@ ARG NEW_MAMBA_USER=jovyan
 ARG NEW_MAMBA_USER_ID=1000
 ARG NEW_MAMBA_USER_GID=57440
 
-ARG GH_ORG="https://github.com/research-software-collaborations"
-ARG GH_REPO="courses-hsf-india-Nov2025"
-ARG GH_BRANCH="ml"
-ARG GH_ENV_DIR="${GH_REPO}/binder"
-
 USER root
 
 RUN if grep -q '^ID=alpine$' /etc/os-release; then \
@@ -36,7 +31,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 USER $MAMBA_USER
 
-#RUN git clone -b ${GH_BRANCH} ${GH_ORG}/${GH_REPO}
 COPY binder/environment.yml .
 
 RUN \
@@ -53,7 +47,7 @@ USER root
 RUN rm -rf /opt/conda/pkgs
 
 RUN ln=`grep -n "exec " /usr/local/bin/_entrypoint.sh | tail -1 | cut -f1 -d:`; \
-    sed -i "${ln}igit clone --recurse-submodules https://github.com/research-software-collaborations/courses-hsf-india-Nov2025" /usr/local/bin/_entrypoint.sh
+    sed -i "${ln}igit clone --recurse-submodules https://github.com/research-software-collaborations/courses-hsf-india-Jan2026" /usr/local/bin/_entrypoint.sh
 
 # remove the news
 COPY binder/overrides.json /tmp
