@@ -5,10 +5,10 @@ ARG NEW_MAMBA_USER=jovyan
 ARG NEW_MAMBA_USER_ID=1000
 ARG NEW_MAMBA_USER_GID=57440
 
-#ARG GH_ORG="https://github.com/research-software-collaborations"
-#ARG GH_REPO="courses-hsf-india-Nov2025"
-#ARG GH_BRANCH="python"
-#ARG GH_ENV_DIR="${GH_REPO}/binder"
+ARG GH_ORG="https://github.com/research-software-collaborations"
+ARG GH_REPO="courses-hsf-india-Nov2025"
+ARG GH_BRANCH="ml"
+ARG GH_ENV_DIR="${GH_REPO}/binder"
 
 USER root
 
@@ -32,33 +32,33 @@ ENV MAMBA_USER=$NEW_MAMBA_USER
 
 USER root
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    git \
-    && rm -rf /var/lib/apt/lists/*
+    git && rm -rf /var/lib/apt/lists/*
+
 USER $MAMBA_USER
 
 #RUN git clone -b ${GH_BRANCH} ${GH_ORG}/${GH_REPO}
-
 COPY binder/environment.yml .
-RUN micromamba env update --name base -f environment.yml && \
-    micromamba install -y  -c conda-forge \       
-       jupyterlab openssh notebook vim nano emacs jupyterlab-slideshow  && \      
+
+RUN \
+    CONDA_OVERRIDE_CUDA="12.9" micromamba env update --name base -f environment.yml && \
+    CONDA_OVERRIDE_CUDA="12.9" micromamba install -y  -c conda-forge \       
+    jupyterlab openssh notebook vim nano emacs curl wget  && \      
     micromamba clean --all --yes
+
+RUN micromamba list
 
 USER root
 
 #clean up after conda
 RUN rm -rf /opt/conda/pkgs
 
+RUN ln=`grep -n "exec " /usr/local/bin/_entrypoint.sh | tail -1 | cut -f1 -d:`; \
+    sed -i "${ln}igit clone --recurse-submodules https://github.com/research-software-collaborations/courses-hsf-india-Nov2025" /usr/local/bin/_entrypoint.sh
+
 # remove the news
 COPY binder/overrides.json /tmp
 RUN mkdir -p /opt/conda/share/jupyter/lab/settings; \
       cp /tmp/overrides.json /opt/conda/share/jupyter/lab/settings    
 
-RUN ln=`grep -n "exec " /usr/local/bin/_entrypoint.sh | tail -1 | cut -f1 -d:`; \
-    sed -i "${ln}igit clone --recurse-submodules https://github.com/research-software-collaborations/courses-hsf-india-Nov2025" /usr/local/bin/_entrypoint.sh
-
-USER jovyan
+USER $MAMBA_USER
 WORKDIR /home/jovyan
-
-RUN echo "export PS1='\[\e[0;32m\]\w\$\[\e[0m\] '" >> .bashrc
-
