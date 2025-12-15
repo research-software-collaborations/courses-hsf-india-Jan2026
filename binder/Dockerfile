@@ -5,11 +5,6 @@ ARG NEW_MAMBA_USER=jovyan
 ARG NEW_MAMBA_USER_ID=1000
 ARG NEW_MAMBA_USER_GID=57440
 
-#ARG GH_ORG="https://github.com/research-software-collaborations"
-#ARG GH_REPO="courses-hsf-india-Nov2025"
-#ARG GH_BRANCH="python"
-#ARG GH_ENV_DIR="${GH_REPO}/binder"
-
 USER root
 
 RUN if grep -q '^ID=alpine$' /etc/os-release; then \
@@ -35,8 +30,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     git \
     && rm -rf /var/lib/apt/lists/*
 USER $MAMBA_USER
-
-#RUN git clone -b ${GH_BRANCH} ${GH_ORG}/${GH_REPO}
 
 COPY binder/environment.yml .
 RUN micromamba env update --name base -f environment.yml && \
