@@ -78,7 +78,7 @@ COPY binder/pixi.toml ${HOME}/
 RUN cd ${HOME}; git clone -b ${GH_BRANCH} ${GH_REPO}
 
 RUN mkdir -p ${HOME}/.jupyter && \
-    cp ${HOME}/jupyter_config.py ${HOME}/.jupyter/jupyter_config.py && \
+    mv ${HOME}/jupyter_config.py ${HOME}/.jupyter/jupyter_config.py && \
     chown -R ${NB_UID} ${HOME}
 
 USER ${NB_USER}
@@ -87,7 +87,10 @@ USER ${NB_USER}
 COPY --from=pixi-builder /opt/binder/.pixi /opt/binder/.pixi
 COPY --from=pixi-builder /pixi-activate.sh /usr/local/share/pixi-activate.sh
 
-WORKDIR ${HOME}/NSBI-workflow-tutorial 
+WORKDIR ${HOME}/NSBI-workflow-tutorial
+RUN mv * ../.
+
+WORKDIR ${HOME}
 
 # Install the example for faster startup
 RUN CONDA_OVERRIDE_CUDA=12.5 pixi install -e ${PIXI_ENV} --manifest-path pixi.toml
