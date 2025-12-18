@@ -9,7 +9,7 @@ ARG PIXI_ENV="nsbi-env-gpu"
 ###################################################################################################
 # Environment builder
 ###################################################################################################
-FROM ghcr.io/prefix-dev/pixi:0.56.0-jammy as pixi-builder
+FROM ghcr.io/prefix-dev/pixi:0.62.0-jammy as pixi-builder
 #
 ARG GH_REPO
 ARG GH_BRANCH
@@ -43,7 +43,7 @@ RUN cat /pixi-activate.sh
 ###################################################################################################
 # Final image
 ###################################################################################################
-FROM ghcr.io/prefix-dev/pixi:0.56.0-jammy
+FROM ghcr.io/prefix-dev/pixi:0.62.0-jammy
 
 ARG GH_REPO
 ARG GH_BRANCH
@@ -93,7 +93,8 @@ RUN mv * ../.
 WORKDIR ${HOME}
 
 # Install the example for faster startup
-RUN CONDA_OVERRIDE_CUDA=12.5 pixi clean && \
+RUN rm -rf .pixi/envs && \ 
+    CONDA_OVERRIDE_CUDA=12.5 pixi clean && \
     CONDA_OVERRIDE_CUDA=12.5 pixi install -e ${PIXI_ENV} --manifest-path pixi.toml
 RUN CONDA_OVERRIDE_CUDA=12.5 pixi run -e ${PIXI_ENV} python -m ipykernel install --user --name sbikernel --display-name "Python (pixi: sbikernel)"
 
