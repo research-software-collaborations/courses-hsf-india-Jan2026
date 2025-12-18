@@ -89,6 +89,7 @@ COPY --from=pixi-builder /pixi-activate.sh /usr/local/share/pixi-activate.sh
 
 WORKDIR ${HOME}/NSBI-workflow-tutorial
 RUN mv * ../.
+RUN mv .* ../.
 
 WORKDIR ${HOME}
 
