@@ -15,8 +15,6 @@ ARG GH_REPO
 ARG GH_BRANCH
 ARG PIXI_ENV
 
-#
-
 WORKDIR /opt/binder
 
 # Install environment
@@ -53,7 +51,6 @@ RUN apt-get update -y
 RUN apt-get install -y git wget emacs vim nano
 RUN apt-get update -y
 
-# https://mybinder.readthedocs.io/en/latest/tutorials/dockerfile.html
 ARG NB_USER=jovyan
 ARG NB_UID=1000
 ENV USER ${NB_USER}
@@ -97,6 +94,6 @@ WORKDIR ${HOME}
 RUN rm -rf .pixi/envs && \ 
     CONDA_OVERRIDE_CUDA=12.5 pixi clean && \
     CONDA_OVERRIDE_CUDA=12.5 pixi install -e ${PIXI_ENV} --manifest-path pixi.toml
-RUN CONDA_OVERRIDE_CUDA=12.5 pixi run -e ${PIXI_ENV} python -m ipykernel install --user --name sbikernel --display-name "Python (pixi: sbikernel)"
+#RUN CONDA_OVERRIDE_CUDA=12.5 pixi run -e ${PIXI_ENV} python -m ipykernel install --user --name sbikernel --display-name "Python (pixi: sbikernel)"
 
 ENTRYPOINT ["/usr/local/share/docker-entrypoint.sh"]
