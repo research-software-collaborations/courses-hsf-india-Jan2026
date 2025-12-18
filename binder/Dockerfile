@@ -69,8 +69,8 @@ RUN echo '#!/bin/bash\n. /usr/local/share/pixi-activate.sh\n git pull\n exec "$@
 # Make sure the contents of this repo are in ${HOME} and owned by ${NB_USER}
 COPY binder/jupyter_config.py ${HOME}/
 RUN echo "c.MappingKernelManager.default_kernel_name='pixi-kernel-python3'" >> ${HOME}/jupyter_config.py
-COPY binder/pixi.lock ${HOME}/
-COPY binder/pixi.toml ${HOME}/
+#COPY binder/pixi.lock ${HOME}/
+#COPY binder/pixi.toml ${HOME}/
 
 RUN cd ${HOME}; git clone -b ${GH_BRANCH} ${GH_REPO}
 
@@ -85,15 +85,14 @@ COPY --from=pixi-builder /opt/binder/.pixi /opt/binder/.pixi
 COPY --from=pixi-builder /pixi-activate.sh /usr/local/share/pixi-activate.sh
 
 WORKDIR ${HOME}/NSBI-workflow-tutorial
-RUN mv * ../.
-RUN mv .git* ../.
+RUN mv * ../. && mv .git* ../.
 
 WORKDIR ${HOME}
+RUN rm -rf NSBI-workflow-tutorial
 
-# Install the example for faster startup
 RUN rm -rf .pixi/envs && \ 
     CONDA_OVERRIDE_CUDA=12.5 pixi clean && \
     CONDA_OVERRIDE_CUDA=12.5 pixi install -e ${PIXI_ENV} --manifest-path pixi.toml
-#RUN CONDA_OVERRIDE_CUDA=12.5 pixi run -e ${PIXI_ENV} python -m ipykernel install --user --name sbikernel --display-name "Python (pixi: sbikernel)"
+
 
 ENTRYPOINT ["/usr/local/share/docker-entrypoint.sh"]
