@@ -1,0 +1,4 @@
+[submodule "content/ScientificPython"]
+	path = content/ScientificPython
+	url = ../../davidlange6/ScientificPython
+	branch = iitm_jan26
