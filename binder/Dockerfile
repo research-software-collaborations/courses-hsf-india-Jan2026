@@ -29,6 +29,14 @@ USER root
 RUN apt-get update && apt-get install -y --no-install-recommends \
     git \
     && rm -rf /var/lib/apt/lists/*
+
+# Run Belle-II setup
+RUN cd /tmp && \
+    wget https://raw.githubusercontent.com/belle2/tools/main/b2install-prepare && \
+    chmod +x b2install-prepare && \
+    ./b2install-prepare --non-interactive all && \
+    rm b2install-prepare
+
 USER $MAMBA_USER
 
 COPY binder/environment.yml .
