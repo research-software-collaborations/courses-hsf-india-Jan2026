@@ -27,7 +27,7 @@ ENV MAMBA_USER=$NEW_MAMBA_USER
 
 USER root
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    git \
+    git wget \
     && rm -rf /var/lib/apt/lists/*
 
 # Run Belle-II setup
