@@ -1,6 +1,6 @@
 #
 ARG GH_REPO="https://github.com/iris-hep/NSBI-workflow-tutorial"
-ARG GH_BRANCH="workspace_building_feature"
+ARG GH_BRANCH="main"
 ARG PIXI_ENV="nsbi-env-gpu"
 
 #
