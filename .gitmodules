@@ -2,3 +2,6 @@
 	path = ScientificPython
 	url = ../../davidlange6/ScientificPython
 	branch = iitm_jan26
+[submodule "Deep-Learning-IIT-Madras"]
+	path = Deep-Learning-IIT-Madras
+	url = ../../alpha-davidson/Deep-Learning-IIT-Madras
