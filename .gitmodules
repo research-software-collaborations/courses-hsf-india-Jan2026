@@ -5,3 +5,9 @@
 [submodule "Deep-Learning-IIT-Madras"]
 	path = Deep-Learning-IIT-Madras
 	url = ../../alpha-davidson/Deep-Learning-IIT-Madras
+[submodule "llm_sft"]
+	path = llm_sft
+	url = ../../abhi-mal/llm_sft
+[submodule "NSBI-workflow-tutorial"]
+	path = NSBI-workflow-tutorial
+	url = ../../iris-hep/NSBI-workflow-tutorial
